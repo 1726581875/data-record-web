@@ -2,9 +2,11 @@ import { baseUrl } from './env'
 
 export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 	type = type.toUpperCase();
-	console.log("baseUrl=" + baseUrl)
+	console.log("baseUrl=" + baseUrl);
 	//url = "http://localhost:9898" + url;
-	 url = "http://159.75.134.161:10000/apis" + url;
+	 // url = "http://159.75.134.161:10000/apis" + url;
+
+	url = baseUrl + url;
 
 	if (type == 'GET') {
 		let dataStr = ''; //数据拼接字符串

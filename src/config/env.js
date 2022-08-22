@@ -10,13 +10,17 @@ let baseUrl = '';
 let routerMode = 'hash';
 let baseImgPath;
 
+
+console.log("process.env.NODE_ENV=" + process.env.NODE_ENV);
 if (process.env.NODE_ENV == 'development') {
-	baseUrl = '';
+	baseUrl = 'http://159.75.134.161:10000/apis';
     baseImgPath = '/img/';
-}else{
+} else {
 	baseUrl = 'http://127.0.0.1:9898';
     baseImgPath = '//elm.cangdu.org/img/';
 }
+
+baseUrl = 'http://127.0.0.1:9898';
 
 export {
 	baseUrl,

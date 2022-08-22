@@ -21,12 +21,19 @@ const routes = [
       path: '/eventRecordDetail/:id',
       component: () => import('../views/eventRecord/EventRecordDetail.vue'),
       meta: ['数据管理', '事件详情'],
-    },
-      {
-        path: '/columnList',
-        component: () => import('../views/column/ColumnList.vue'),
-        meta: ['数据管理', '字段列表']
-      }]
+    },{
+        path: '/schemaList',
+        component: () => import('../views/schema/SchemaList.vue'),
+        meta: ['数据管理', '数据库列表']
+      },{
+      path: '/tableList',
+      component: () => import('../views/table/TableList.vue'),
+      meta: ['数据管理', '表列表']
+    },{
+      path: '/columnList',
+      component: () => import('../views/column/ColumnList.vue'),
+      meta: ['数据管理', '字段列表']
+    }]
   }
 ]
 
