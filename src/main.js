@@ -7,6 +7,11 @@ import store from './store/'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+import axios from 'axios'
+Vue.prototype.$axios = axios
+//允许跨域携带cookie信息
+axios.defaults.withCredentials = true
+
 
 Vue.use(ElementUI);
 

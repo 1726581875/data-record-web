@@ -9,14 +9,14 @@
 			<img :src="baseImgPath + adminInfo.avatar" class="avator">
 			<el-dropdown-menu slot="dropdown">
 				<el-dropdown-item command="home">首页</el-dropdown-item>
-				<el-dropdown-item command="signout">退出</el-dropdown-item>
+				<el-dropdown-item command="loginOut">退出</el-dropdown-item>
 			</el-dropdown-menu>
 		</el-dropdown>
     </div>
 </template>
 
 <script>
-	import {signout} from '@/api/getData'
+	import {loginOut} from '@/api/sysUserApi'
 	import {baseImgPath} from '@/config/env'
 	import {mapActions, mapState} from 'vuex'
 
@@ -39,19 +39,23 @@
 			async handleCommand(command) {
 				if (command == 'home') {
 					this.$router.push('/manage');
-				}else if(command == 'signout'){
-					const res = await signout()
-					if (res.status == 1) {
+				} else if(command == 'loginOut'){
+					const res = await loginOut()
+					if (res.status == 0) {
 						this.$message({
 	                        type: 'success',
 	                        message: '退出成功'
 	                    });
-	                    this.$router.push('/');
+	                    this.$router.push('/login');
 					}else{
-						this.$message({
-	                        type: 'error',
-	                        message: res.message
-	                    });
+						if(res.status == 401){
+							this.$router.push('/login');
+						} else {
+							this.$message({
+								type: 'error',
+								message: res.message
+							});
+						}
 					}
 				}
 			},

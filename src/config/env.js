@@ -20,7 +20,7 @@ if (process.env.NODE_ENV == 'development') {
     baseImgPath = '//elm.cangdu.org/img/';
 }
 
-baseUrl = 'http://127.0.0.1:9898';
+baseUrl = 'http://localhost:9898';
 
 export {
 	baseUrl,

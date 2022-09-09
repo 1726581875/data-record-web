@@ -70,6 +70,7 @@
 <script>
     import headTop from '../../components/headTop'
     import {getList} from '@/api/getEventRecord'
+    import {baseUrl} from "@/config/env";
     export default {
         data(){
             return {
@@ -157,6 +158,26 @@
                 this.getEventRecordList()
             },
             async getEventRecordList() {
+
+                // axios
+
+/*                this.$axios.post(baseUrl + '/eventRecord/getList', {
+                    current: this.currentPage,
+                    size: this.pageSize,
+                    eventType: this.typeValue,
+                    timeRange: {
+                        startTime: this.timeValue[0],
+                        endTime: this.timeValue[1]
+                    }
+                }).then(resp => {
+                    if (resp.data.status == 0) {
+                        this.count = resp.data.data.total;
+                        this.eventRecordList = resp.data.data.records;
+                    }
+                    }).catch(error => {
+                    this.$message.error('获取数据失败！');
+                });*/
+
                 let resp = await getList({
                     current: this.currentPage,
                     size: this.pageSize,

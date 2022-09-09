@@ -21,9 +21,10 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 	}
 
 	if (window.fetch && method == 'fetch') {
+		console.log("=== fetch ===")
 		let requestConfig = {
-			credentials: 'include',
 			method: type,
+			credentials: 'include',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
@@ -35,19 +36,22 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 		}
 
 		if (type == 'POST') {
-		    console.log("POST " + url)
 			Object.defineProperty(requestConfig, 'body', {
 				value: JSON.stringify(data)
 			})
-
-            console.log("--------- " + url)
 		}
 
 		try {
 			const response = await fetch(url, requestConfig);
+			console.log(response)
+			if(response.status == 401) {
+				console.log("请求未授权");
+				window.location.href ="login";
+			}
 			const responseJson = await response.json();
 			return responseJson
 		} catch (error) {
+			console.log(error)
 			throw new Error(error)
 		}
 	} else {
@@ -66,6 +70,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 
 			requestObj.open(type, url, true);
 			requestObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			requestObj.withCredentials = true;
 			requestObj.send(sendData);
 
 			requestObj.onreadystatechange = () => {
