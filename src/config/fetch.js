@@ -46,7 +46,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			console.log(response)
 			if(response.status == 401) {
 				console.log("请求未授权");
-				window.location.href ="login";
+				window.location.href ="/login";
 			}
 			const responseJson = await response.json();
 			return responseJson

@@ -38,6 +38,14 @@ const routes = [
       path: '/columnList',
       component: () => import('../views/column/ColumnList.vue'),
       meta: ['数据管理', '字段列表']
+    },{
+        path: '/dataSourceList',
+        component: () => import('../views/dataSource/DataSourceList.vue'),
+        meta: ['数据管理', '数据源管理']
+      },{
+      path: '/tenantTableList/:id',
+      component: () => import('../views/dataSource/TenantTableList.vue'),
+      meta: ['数据管理', '租户table管理']
     }]
   }
 ]

@@ -16,7 +16,7 @@ if (process.env.NODE_ENV == 'development') {
 	baseUrl = 'http://159.75.134.161:10000/apis';
     baseImgPath = '/img/';
 } else {
-	baseUrl = 'http://127.0.0.1:9898';
+	baseUrl = 'http://localhost:9898';
     baseImgPath = '//elm.cangdu.org/img/';
 }
 
