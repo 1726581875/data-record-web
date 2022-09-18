@@ -20,5 +20,14 @@ export const saveDataSource = data => fetch('/dataSource/save', data, 'POST');
  */
 export const deleteDataSourceById = data => fetch('/dataSource/deleteById', data, 'DELETE');
 
+/**
+ * 数据迁移、同步
+ * @param data
+ * @returns {Promise<unknown>}
+ */
+export const dataMigration = data => fetch('/dataSource/dataMigration', data, 'POST');
+
+export const getDataList = data => fetch('/data/getList', data, 'GET');
+
 
 

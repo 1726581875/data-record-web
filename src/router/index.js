@@ -46,7 +46,11 @@ const routes = [
       path: '/tenantTableList/:id',
       component: () => import('../views/dataSource/TenantTableList.vue'),
       meta: ['数据管理', '租户table管理']
-    }]
+    },{
+        path: '/dataList/:tableName',
+        component: () => import('../views/dataSource/data/DataList.vue'),
+        meta: ['数据管理', '数据列表']
+      }]
   }
 ]
 

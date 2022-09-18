@@ -13,7 +13,7 @@
         <el-card class="box-card" v-for="item in tenantTableList">
             <div slot="header" class="clearfix">
                 <span>{{item.tableName}}</span>
-                <el-button style="float: right; padding: 3px 0" type="text">查看</el-button>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="toDataListPage(item.tableName)">查看</el-button>
             </div>
             <div class="text item">
                 {{item.createTime}}
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import headTop from '../../components/headTop'
+    import headTop from '@/components/headTop'
     import {getTenantTableList} from '@/api/dataSourceApi'
     export default {
         data(){
@@ -84,12 +84,12 @@
                 }
             },
             /**
-             * 跳转到事件详情
+             * 跳转到数据列表
              */
-            toDetail(id) {
-/*                this.$router.push({
-                    path: `/eventRecordDetail/${id}`,
-                });*/
+            toDataListPage(tableName) {
+                this.$router.push({
+                    path: `/dataList/${tableName}`,
+                });
             },
 
 

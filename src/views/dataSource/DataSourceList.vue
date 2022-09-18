@@ -21,9 +21,10 @@
         <el-card class="box-card" v-for="item in dataSourceList">
             <div slot="header" class="clearfix">
                 <span>{{item.name}}</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="toTenantTablesPage(item.id)">查看</el-button>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="handleEdit(item)">编辑</el-button>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="handleDelete(item.id)">删除</el-button>
+                <el-button style="float: right;" type="text" @click="toTenantTablesPage(item.id)">查看</el-button>
+                <el-button style="float: right;" type="text" @click="handleEdit(item)">编辑</el-button>
+                <el-button style="float: right;" type="text" @click="handleDelete(item.id)">删除</el-button>
+                <el-button style="float: right;" type="text" @click="syncDataSource(item.id)">同步</el-button>
             </div>
             <div class="text item">
                 {{item.hostname}}
@@ -83,7 +84,7 @@
 
 <script>
     import headTop from '../../components/headTop'
-    import {getDataSourceList,saveDataSource,deleteDataSourceById} from '@/api/dataSourceApi'
+    import {getDataSourceList,saveDataSource,deleteDataSourceById,dataMigration} from '@/api/dataSourceApi'
     export default {
         data(){
             return {
@@ -221,6 +222,18 @@
                     await this.initData();
                 }
 
+            },
+            async syncDataSource(id) {
+                let resp = await dataMigration({dataSourceId: id});
+                if (resp.status == 0) {
+                    this.$message({
+                        showClose: true,
+                        message: '执行成功',
+                        type: 'success'
+                    });
+
+                    await this.initData();
+                }
             },
 
 
