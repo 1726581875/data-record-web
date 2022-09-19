@@ -14,6 +14,7 @@
             <div slot="header" class="clearfix">
                 <span>{{item.tableName}}</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toDataListPage(item.tableName)">查看</el-button>
+                <el-button style="float: right;" type="text" @click="syncTable(item.sourceTableName)">同步</el-button>
             </div>
             <div class="text item">
                 {{item.createTime}}
@@ -39,7 +40,7 @@
 
 <script>
     import headTop from '@/components/headTop'
-    import {getTenantTableList} from '@/api/dataSourceApi'
+    import {dataMigration, getTenantTableList} from '@/api/dataSourceApi'
     export default {
         data(){
             return {
@@ -90,6 +91,19 @@
                 this.$router.push({
                     path: `/dataList/${tableName}`,
                 });
+            },
+            async syncTable(tableName) {
+                let dataSourceId = this.$route.params.id;
+                let resp = await dataMigration({dataSourceId: dataSourceId, tableName: tableName});
+                if (resp.status == 0) {
+                    this.$message({
+                        showClose: true,
+                        message: '执行成功',
+                        type: 'success'
+                    });
+
+                    await this.initData();
+                }
             },
 
 

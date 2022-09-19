@@ -29,5 +29,7 @@ export const dataMigration = data => fetch('/dataSource/dataMigration', data, 'P
 
 export const getDataList = data => fetch('/data/getList', data, 'GET');
 
+export const getDataSyncRecordList = data => fetch('/syncRecord/getList', data, 'POST');
+
 
 

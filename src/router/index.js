@@ -50,7 +50,11 @@ const routes = [
         path: '/dataList/:tableName',
         component: () => import('../views/dataSource/data/DataList.vue'),
         meta: ['数据管理', '数据列表']
-      }]
+      },{
+      path: '/syncRecordList',
+      component: () => import('../views/dataSource/DataSyncRecordList.vue'),
+      meta: ['数据管理', '数据同步记录列表']
+    }]
   }
 ]
 
