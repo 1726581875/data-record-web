@@ -32,13 +32,10 @@
                 <span>{{item.name}}</span>
             </div>
             <div class="text item">
-                {{item.hostname}}:{{item.serverPort}}/{{item.username}}
+                {{item.hostname}}:{{item.serverPort}}/{{item.schemaName}}@{{item.schemaName}}
             </div>
 <!--            <div class="text item">
-                {{item.serverPort}}
-            </div>
-            <div class="text item">
-                {{item.username}}
+                {{ item.pingLoading + '' }}
             </div>-->
         </el-card>
 
@@ -148,7 +145,7 @@
                     this.count = resp.data.total;
                     if(resp.data.records.length > 0) {
                         this.dataSourceList = resp.data.records;
-                        this.dataSourceList.forEach(item => item.pingLoading = false)
+                        //this.dataSourceList.forEach(item => item.pingLoading = false)
                     }
                 }
             },
@@ -246,12 +243,13 @@
              async ping(item, i) {
                  let id = item.id;
 
-                 this.dataSourceList[i].pingLoading = true;
+                 // this.dataSourceList[i].pingLoading = true;
+                  item.pingLoading = true;
+                 // item.name = item.name + "1";
 
-                 console.log("index=" + i);
-                 console.log(this.dataSourceList[i]);
+                 this.dataSourceList.splice(i, 1, {...this.dataSourceList[i], pingLoading: true})
+                 console.log(JSON.stringify(item));
 
-                 //item.pingLoading = true;
                  let resp = await ping({dataSourceId: id});
                  if (resp.status == 0) {
                      if (resp.data == true) {
