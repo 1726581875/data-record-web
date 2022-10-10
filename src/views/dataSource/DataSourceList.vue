@@ -165,7 +165,7 @@
              */
             handleAdd() {
                 this.dialogTitle = '新增';
-                this.category = {};
+                this.dataSource = {};
                 this.editVisible = true;
             },
             /**
@@ -248,9 +248,10 @@
 
                  this.dataSourceList[i].pingLoading = true;
 
+                 console.log("index=" + i);
                  console.log(this.dataSourceList[i]);
 
-                 item.pingLoading = true;
+                 //item.pingLoading = true;
                  let resp = await ping({dataSourceId: id});
                  if (resp.status == 0) {
                      if (resp.data == true) {
