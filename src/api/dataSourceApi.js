@@ -32,4 +32,7 @@ export const getDataList = data => fetch('/data/getList', data, 'GET');
 export const getDataSyncRecordList = data => fetch('/syncRecord/getList', data, 'POST');
 
 
+export const ping = data => fetch('/command/ping', data, 'POST');
+
+
 

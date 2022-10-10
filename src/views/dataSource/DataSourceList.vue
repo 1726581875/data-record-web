@@ -18,23 +18,28 @@
         </el-button>
 
 
-        <el-card class="box-card" v-for="item in dataSourceList">
+        <el-card class="box-card" v-for="(item,i) in dataSourceList">
             <div slot="header" class="clearfix">
-                <span>{{item.name}}</span>
+                <!--<span>{{item.name}}</span>-->
                 <el-button style="float: right;" type="text" @click="toTenantTablesPage(item.id)">查看</el-button>
                 <el-button style="float: right;" type="text" @click="handleEdit(item)">编辑</el-button>
                 <el-button style="float: right;" type="text" @click="handleDelete(item.id)">删除</el-button>
                 <el-button style="float: right;" type="text" @click="syncDataSource(item.id)">同步</el-button>
+                <el-button style="float: right;" type="text" @click="ping(item, i)" v-loading="item.pingLoading">ping</el-button>
+                <el-button style="float: right;" type="text" @click="handleEdit(item)">定时</el-button>
             </div>
             <div class="text item">
-                {{item.hostname}}
+                <span>{{item.name}}</span>
             </div>
             <div class="text item">
+                {{item.hostname}}:{{item.serverPort}}/{{item.username}}
+            </div>
+<!--            <div class="text item">
                 {{item.serverPort}}
             </div>
             <div class="text item">
                 {{item.username}}
-            </div>
+            </div>-->
         </el-card>
 
 
@@ -84,7 +89,7 @@
 
 <script>
     import headTop from '../../components/headTop'
-    import {getDataSourceList,saveDataSource,deleteDataSourceById,dataMigration} from '@/api/dataSourceApi'
+    import {getDataSourceList,saveDataSource,deleteDataSourceById,dataMigration, ping} from '@/api/dataSourceApi'
     export default {
         data(){
             return {
@@ -141,7 +146,10 @@
                 });
                 if (resp.status == 0) {
                     this.count = resp.data.total;
-                    this.dataSourceList = resp.data.records;
+                    if(resp.data.records.length > 0) {
+                        this.dataSourceList = resp.data.records;
+                        this.dataSourceList.forEach(item => item.pingLoading = false)
+                    }
                 }
             },
             /**
@@ -235,6 +243,34 @@
                     await this.initData();
                 }
             },
+             async ping(item, i) {
+                 let id = item.id;
+
+                 this.dataSourceList[i].pingLoading = true;
+
+                 console.log(this.dataSourceList[i]);
+
+                 item.pingLoading = true;
+                 let resp = await ping({dataSourceId: id});
+                 if (resp.status == 0) {
+                     if (resp.data == true) {
+                         this.$message({
+                             showClose: true,
+                             message: '正常连接',
+                             type: 'success'
+                         });
+                     } else {
+                         this.$message({
+                             showClose: true,
+                             message: 'ping不通',
+                             type: 'warning'
+                         });
+                     }
+                 } else {
+                     this.$message.error('ping命令执行失败');
+                 }
+                 this.dataSourceList[i].pingLoading = false;
+             },
 
 
         },
