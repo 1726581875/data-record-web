@@ -127,16 +127,16 @@
         },
         methods: {
             async initData(){
-                await this.getColumnList();
+                await this.getDataSourceList();
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.getColumnList()
+                this.getDataSourceList()
             },
-            async getColumnList() {
+            async getDataSourceList() {
                 let resp = await getDataSourceList({
                     current: this.currentPage,
                     size: this.pageSize,
@@ -144,8 +144,9 @@
                 if (resp.status == 0) {
                     this.count = resp.data.total;
                     if(resp.data.records.length > 0) {
-                        this.dataSourceList = resp.data.records;
-                        //this.dataSourceList.forEach(item => item.pingLoading = false)
+                        let tmpList = [];
+                        resp.data.records.forEach(item => tmpList.push({...item, pingLoading: false}));
+                        this.dataSourceList = tmpList;
                     }
                 }
             },
@@ -242,12 +243,8 @@
             },
              async ping(item, i) {
                  let id = item.id;
-
-                 // this.dataSourceList[i].pingLoading = true;
                   item.pingLoading = true;
-                 // item.name = item.name + "1";
-
-                 this.dataSourceList.splice(i, 1, {...this.dataSourceList[i], pingLoading: true})
+                 //this.dataSourceList.splice(i, 1, {...this.dataSourceList[i], pingLoading: true})
                  console.log(JSON.stringify(item));
 
                  let resp = await ping({dataSourceId: id});
@@ -268,7 +265,7 @@
                  } else {
                      this.$message.error('ping命令执行失败');
                  }
-                 this.dataSourceList[i].pingLoading = false;
+                 item.pingLoading = false;
              },
 
 
@@ -312,5 +309,14 @@
         float: left;
         margin-left: 20px;
         margin-top: 10px;
+    }
+
+    .info-title {
+        color: #19d3ea;
+        font-size: 18px;
+        width: 100%;   /*一定要设置宽度，或者元素内含的百分比*/
+        overflow:hidden; /*溢出的部分隐藏*/
+        white-space: nowrap; /*文本不换行*/
+        text-overflow:ellipsis;/*ellipsis:文本溢出显示省略号（...）；clip：不显示省略标记（...），而是简单的裁切*/
     }
 </style>
