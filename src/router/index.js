@@ -54,6 +54,10 @@ const routes = [
       path: '/syncRecordList',
       component: () => import('../views/dataSource/DataSyncRecordList.vue'),
       meta: ['数据管理', '数据同步记录列表']
+    },{
+      path: '/charts',
+      component: () => import('../views/charts/Charts.vue'),
+      meta: ['图表统计', '图表统计']
     }]
   }
 ]

@@ -21,6 +21,7 @@ if (process.env.NODE_ENV == 'development') {
 }
 
 baseUrl = 'http://localhost:9898';
+// baseUrl = 'http://159.75.134.161:10000/apis';
 
 export {
 	baseUrl,

@@ -12,6 +12,8 @@ Vue.prototype.$axios = axios
 //允许跨域携带cookie信息
 axios.defaults.withCredentials = true
 
+import * as echarts from 'echarts'
+Vue.prototype.$echarts = echarts;
 
 Vue.use(ElementUI);
 
