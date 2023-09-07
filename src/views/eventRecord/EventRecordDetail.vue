@@ -131,7 +131,10 @@
                 compareResultData: [],
                 // 查看详情弹框
                 seeDetailDialogVisible: false,
-                changeDetail:{}
+                changeDetail:{},
+
+                // 当前数据源id
+                dataSourceId: ''
             }
         },
     	components: {
@@ -143,7 +146,9 @@
         methods: {
             async initData(){
                 let id = this.$route.params.id;
-                await this.getEventRecordById(id);
+                let dataSourceId = this.$route.params.dataSourceId;
+                this.dataSourceId = dataSourceId;
+                await this.getEventRecordById(id, dataSourceId);
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -152,8 +157,8 @@
                 this.currentPage = val;
             },
 
-            async getEventRecordById(id) {
-                const resp = await getById({id: id});
+            async getEventRecordById(id, dataSourceId) {
+                const resp = await getById({id: id, dataSourceId: dataSourceId});
                 if (resp.status == 0) {
                     this.eventRecord = resp.data.eventRecord;
                     this.extraInfo = resp.data.extraInfo;
@@ -170,7 +175,7 @@
             },
 
             async getInsertRowList(id) {
-                const resp = await getInsertRows({current: this.currentPage, size: this.pageSize, recordId: id});
+                const resp = await getInsertRows({current: this.currentPage, size: this.pageSize, recordId: id, dataSourceId: this.dataSourceId});
                 if (resp.status == 0) {
                     this.count = resp.data.total;
                     this.changeRows = resp.data.records;
@@ -178,7 +183,7 @@
             },
 
             async getDeleteRowList(id) {
-                const resp = await getDeleteRows({current: this.currentPage, size: this.pageSize, recordId: id});
+                const resp = await getDeleteRows({current: this.currentPage, size: this.pageSize, recordId: id, dataSourceId: this.dataSourceId});
                 if (resp.status == 0) {
                     this.count = resp.data.total;
                     this.changeRows = resp.data.records;
@@ -186,7 +191,7 @@
             },
 
             async getUpdateRowList(id) {
-                const resp = await getUpdateRows({current: this.currentPage, size: this.pageSize, recordId: id});
+                const resp = await getUpdateRows({current: this.currentPage, size: this.pageSize, recordId: id, dataSourceId: this.dataSourceId});
                 if (resp.status == 0) {
                     this.count = resp.data.total;
                     this.changeRows = resp.data.records;

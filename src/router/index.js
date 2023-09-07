@@ -23,7 +23,7 @@ const routes = [
       component: () => import('../views/eventRecord/EventRecordList.vue'),
       meta: ['数据管理', '事件列表']
     },{
-      path: '/eventRecordDetail/:id',
+      path: '/eventRecordDetail/:dataSourceId/:id',
       component: () => import('../views/eventRecord/EventRecordDetail.vue'),
       meta: ['数据管理', '事件详情'],
     },{
