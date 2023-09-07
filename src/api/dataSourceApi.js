@@ -34,5 +34,9 @@ export const getDataSyncRecordList = data => fetch('/syncRecord/getList', data, 
 
 export const ping = data => fetch('/command/ping', data, 'POST');
 
+export const listenBinlog = data => fetch('/dataSource/listenBinlog', data, 'POST');
+
+export const cancelListen = data => fetch('/dataSource/cancelListen', data, 'POST');
+
 
 

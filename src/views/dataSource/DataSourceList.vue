@@ -26,6 +26,8 @@
                 <el-button style="float: right;" type="text" @click="handleDelete(item.id)">删除</el-button>
                 <el-button style="float: right;" type="text" @click="syncDataSource(item.id)">同步</el-button>
                 <el-button style="float: right;" type="text" @click="ping(item, i)" v-loading="item.pingLoading">ping</el-button>
+                <el-button v-if="!item.isListen || item.isListen == '0'" style="float: right;" type="text" @click="listenBinlog(item, i)" v-loading="item.pingLoading">订阅binlog</el-button>
+                <el-button v-if="item.isListen == '1'" style="float: right;" type="text" @click="cancelListen(item, i)" v-loading="item.pingLoading">取消订阅</el-button>
                 <el-button style="float: right;" type="text" @click="handleEdit(item)">定时</el-button>
             </div>
             <div class="text item">
@@ -86,7 +88,7 @@
 
 <script>
     import headTop from '../../components/headTop'
-    import {getDataSourceList,saveDataSource,deleteDataSourceById,dataMigration, ping} from '@/api/dataSourceApi'
+    import {getDataSourceList,saveDataSource,deleteDataSourceById,dataMigration, ping, cancelListen, listenBinlog} from '@/api/dataSourceApi'
     export default {
         data(){
             return {
@@ -267,6 +269,43 @@
                  }
                  item.pingLoading = false;
              },
+
+            async listenBinlog(item) {
+                let id = item.id;
+                item.pingLoading = true;
+                let resp = await listenBinlog({dataSourceId: id});
+                if (resp.status == 0) {
+                    this.$message({
+                        showClose: true,
+                        message: '订阅成功',
+                        type: 'success'
+                    });
+                    item.isListen = '1';
+                } else {
+                    this.$message.error('订阅失败');
+                }
+                item.pingLoading = false;
+            },
+
+            async cancelListen(item) {
+                let id = item.id;
+                item.pingLoading = true;
+                //this.dataSourceList.splice(i, 1, {...this.dataSourceList[i], pingLoading: true})
+                console.log(JSON.stringify(item));
+
+                let resp = await cancelListen({dataSourceId: id});
+                if (resp.status == 0) {
+                    this.$message({
+                        showClose: true,
+                        message: '取消成功',
+                        type: 'success'
+                    });
+                    item.isListen = '0';
+                } else {
+                    this.$message.error('取消失败');
+                }
+                item.pingLoading = false;
+            },
 
 
         },
