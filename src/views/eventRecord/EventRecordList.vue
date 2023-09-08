@@ -51,6 +51,7 @@
                <!-- <el-table-column property="binLogFileName" label="binlog文件名" ></el-table-column>-->
                 <el-table-column property="databaseName" label="数据库" ></el-table-column>
                 <el-table-column property="tableName" label="表名" ></el-table-column>
+                <el-table-column property="sql" label="sql" ></el-table-column>
                 <el-table-column property="pos" label="开始位置"></el-table-column>
                 <el-table-column property="endLogPos" label="结束位置"></el-table-column>
                 <el-table-column property="eventType" label="事件类型"></el-table-column>
@@ -92,22 +93,27 @@
                 pageSize: 20,
 
                 //类型选择器
-                typeOptions: [{
-                    value: 'EXT_WRITE_ROWS',
-                    label: '插入事件'
-                }, {
-                    value: 'EXT_DELETE_ROWS',
-                    label: '删除事件'
-                }, {
-                    value: 'EXT_UPDATE_ROWS',
-                    label: '更新事件'
-                }, {
-                    value: 'QUERY',
-                    label: 'QUERY'
-                }, {
-                    value: 'TABLE_MAP',
-                    label: 'TABLE_MAP'
-                }],
+                typeOptions: [
+                    {
+                        value: '',
+                        label: '全部'
+                    },
+                    {
+                        value: 'EXT_WRITE_ROWS',
+                        label: '插入事件'
+                    }, {
+                        value: 'EXT_DELETE_ROWS',
+                        label: '删除事件'
+                    }, {
+                        value: 'EXT_UPDATE_ROWS',
+                        label: '更新事件'
+                    }, {
+                        value: 'QUERY',
+                        label: 'QUERY'
+                    }, {
+                        value: 'TABLE_MAP',
+                        label: 'TABLE_MAP'
+                    }],
                 typeValue: '',
                 dataSourceId: '',
                 dataSourceList:[],
