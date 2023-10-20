@@ -2,6 +2,17 @@
     <div class="fillcontain">
         <head-top></head-top>
 
+        <div style="float: left;margin-left: 20px">
+            <el-select v-model="dataSourceId" placeholder="数据源">
+                <el-option
+                        v-for="item in dataSourceList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                </el-option>
+            </el-select>
+        </div>
+
         <div style="float: left;margin-left: 100px">
             <el-select v-model="typeValue" placeholder="类型">
                 <el-option
@@ -40,6 +51,7 @@
                <!-- <el-table-column property="binLogFileName" label="binlog文件名" ></el-table-column>-->
                 <el-table-column property="databaseName" label="数据库" ></el-table-column>
                 <el-table-column property="tableName" label="表名" ></el-table-column>
+                <el-table-column property="sql" label="sql" ></el-table-column>
                 <el-table-column property="pos" label="开始位置"></el-table-column>
                 <el-table-column property="endLogPos" label="结束位置"></el-table-column>
                 <el-table-column property="eventType" label="事件类型"></el-table-column>
@@ -70,6 +82,7 @@
 <script>
     import headTop from '../../components/headTop'
     import {getList} from '@/api/getEventRecord'
+    import {getDataSourceList} from '@/api/dataSourceApi'
     import {baseUrl} from "@/config/env";
     export default {
         data(){
@@ -80,24 +93,30 @@
                 pageSize: 20,
 
                 //类型选择器
-                typeOptions: [{
-                    value: 'EXT_WRITE_ROWS',
-                    label: '插入事件'
-                }, {
-                    value: 'EXT_DELETE_ROWS',
-                    label: '删除事件'
-                }, {
-                    value: 'EXT_UPDATE_ROWS',
-                    label: '更新事件'
-                }, {
-                    value: 'QUERY',
-                    label: 'QUERY'
-                }, {
-                    value: 'TABLE_MAP',
-                    label: 'TABLE_MAP'
-                }],
+                typeOptions: [
+                    {
+                        value: '',
+                        label: '全部'
+                    },
+                    {
+                        value: 'EXT_WRITE_ROWS',
+                        label: '插入事件'
+                    }, {
+                        value: 'EXT_DELETE_ROWS',
+                        label: '删除事件'
+                    }, {
+                        value: 'EXT_UPDATE_ROWS',
+                        label: '更新事件'
+                    }, {
+                        value: 'QUERY',
+                        label: 'QUERY'
+                    }, {
+                        value: 'TABLE_MAP',
+                        label: 'TABLE_MAP'
+                    }],
                 typeValue: '',
-
+                dataSourceId: '',
+                dataSourceList:[],
 
                 // 日期范围选择器
                 pickerOptions: {
@@ -148,8 +167,21 @@
         },
         methods: {
             async initData(){
+                await this.getAllDataSource();
                 await this.getEventRecordList();
             },
+
+            async getAllDataSource(){
+                let resp = await getDataSourceList({size: -1});
+                if (resp.status == 0) {
+                    this.dataSourceList = resp.data.records;
+                    if(this.dataSourceList.length > 0) {
+                        this.dataSourceId = this.dataSourceList[0].id;
+                    }
+
+                }
+            },
+
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
@@ -178,26 +210,30 @@
                     this.$message.error('获取数据失败！');
                 });*/
 
-                let resp = await getList({
-                    current: this.currentPage,
-                    size: this.pageSize,
-                    eventType: this.typeValue,
-                    timeRange: {
-                        startTime: this.timeValue[0],
-                        endTime: this.timeValue[1]
+                if(this.dataSourceId && this.dataSourceId.length > 0) {
+                    let resp = await getList({
+                        current: this.currentPage,
+                        size: this.pageSize,
+                        dataSourceId: this.dataSourceId,
+                        eventType: this.typeValue,
+                        timeRange: {
+                            startTime: this.timeValue[0],
+                            endTime: this.timeValue[1]
+                        }
+                    });
+                    if (resp.status == 0) {
+                        this.count = resp.data.total;
+                        this.eventRecordList = resp.data.records;
                     }
-                });
-                if (resp.status == 0) {
-                    this.count = resp.data.total;
-                    this.eventRecordList = resp.data.records;
                 }
             },
             /**
              * 跳转到事件详情
              */
             toDetail(id) {
+                let _dataSourceId = this.dataSourceId;
                 this.$router.push({
-                    path: `/eventRecordDetail/${id}`,
+                    path: `/eventRecordDetail/${_dataSourceId}/${id}`,
                 });
             },
 
