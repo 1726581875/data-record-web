@@ -12,16 +12,19 @@
 
         <el-card class="box-card" v-for="item in tenantTableList">
             <div slot="header" class="clearfix">
-                <span>{{item.tableName}}</span>
+                <span class="fixed-span" :title="item.tableName">{{item.tableName}}</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toDataListPage(item.tableName)">查看</el-button>
-                <el-button style="float: right;" type="text" @click="syncTable(item.sourceTableName)">同步</el-button>
+                <el-button style="float: right;  padding: 3px 0" type="text" @click="syncTable(item.sourceTableName)">同步</el-button>
             </div>
-            <div class="text item">
-                {{item.createTime}}
-            </div>
-            <div class="text item">
-                {{item.updateTime}}
-            </div>
+            <span class="text item">
+                原表表名: {{item.sourceTableName}}
+            </span>
+            <span class="text item">
+                表数据量: {{item.rowNum}}
+            </span>
+            <span class="text item">
+                创建时间: {{item.createTime}}
+            </span>
         </el-card>
 
 
@@ -130,7 +133,9 @@
     }
 
     .item {
+        display: block;
         margin-bottom: 18px;
+        text-align: left;
     }
 
     .clearfix:before,
@@ -144,8 +149,18 @@
 
     .box-card {
         width: 270px;
+        height: 200px;
         float: left;
         margin-left: 20px;
         margin-top: 10px;
+    }
+
+    .fixed-span {
+        display: inline-block;
+        width: 150px; /* 设置固定宽度 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        //border: 1px solid black;
     }
 </style>
