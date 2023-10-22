@@ -26,9 +26,9 @@
                 <el-button style="float: right;" type="text" @click="handleDelete(item.id)">删除</el-button>
                 <el-button style="float: right;" type="text" @click="syncDataSource(item.id)">同步</el-button>
                 <el-button style="float: right;" type="text" @click="ping(item, i)" v-loading="item.pingLoading">ping</el-button>
-                <el-button v-if="!item.isListen || item.isListen == '0'" style="float: right;" type="text" @click="listenBinlog(item, i)" v-loading="item.pingLoading">订阅binlog</el-button>
-                <el-button v-if="item.isListen == '1'" style="float: right;" type="text" @click="cancelListen(item, i)" v-loading="item.pingLoading">取消订阅</el-button>
-                <el-button style="float: right;" type="text" @click="handleEdit(item)">定时</el-button>
+                <el-button v-if="!item.isListen || item.isListen == '0'" style="float: right;" type="text" @click="listenBinlog(item, i)">订阅binlog</el-button>
+                <el-button v-if="item.isListen == '1'" style="float: right;" type="text" @click="cancelListen(item, i)">取消订阅</el-button>
+                <!--<el-button style="float: right;" type="text">定时</el-button>-->
             </div>
             <div class="text item">
                 <span>{{item.name}}</span>
@@ -272,7 +272,6 @@
 
             async listenBinlog(item) {
                 let id = item.id;
-                item.pingLoading = true;
                 let resp = await listenBinlog({dataSourceId: id});
                 if (resp.status == 0) {
                     this.$message({
@@ -284,12 +283,10 @@
                 } else {
                     this.$message.error('订阅失败');
                 }
-                item.pingLoading = false;
             },
 
             async cancelListen(item) {
                 let id = item.id;
-                item.pingLoading = true;
                 //this.dataSourceList.splice(i, 1, {...this.dataSourceList[i], pingLoading: true})
                 console.log(JSON.stringify(item));
 
@@ -304,7 +301,6 @@
                 } else {
                     this.$message.error('取消失败');
                 }
-                item.pingLoading = false;
             },
 
 
